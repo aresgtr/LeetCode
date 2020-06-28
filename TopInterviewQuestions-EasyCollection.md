@@ -118,7 +118,7 @@ class Solution {
 ```java
 class Solution {
   public void rotate(int[] nums, int k) {
-    k = k % nums.length;
+    k = k % nums.length;    //  为了保险起见，免得转好几圈
     int count = 0;
     for (int start = 0; count < nums.length; start++) {
       int current = start;
@@ -136,7 +136,28 @@ class Solution {
 }
 ```
 
+```python
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        n = len(nums)
+        k %= n
+        
+        start = count = 0
+        while count < n:
+            current, prev = start, nums[start]
+            while True:
+                next_idx = (current + k) % n
+                nums[next_idx], prev = prev, nums[next_idx]
+                current = next_idx
+                count += 1
+                
+                if start == current:
+                    break
+            start += 1
+```
+
 Time: O(n)
+
 Space: O(1)
 
 ### Best solution: Reverse
@@ -162,4 +183,9 @@ class Solution {
 ```
 
 Time: O(n)
+
 Space: O(1)
+
+### Notes
+
+Reverse的方法最好，最易于理解。Cyclic Replacement不易理解。自己的方法运算时间太长。
