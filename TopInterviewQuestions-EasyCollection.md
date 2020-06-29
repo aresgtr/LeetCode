@@ -189,3 +189,38 @@ Space: O(1)
 ### Notes
 
 Reverse的方法最好，最易于理解。Cyclic Replacement不易理解。自己的方法运算时间太长。
+
+## Contains Duplicate
+
+### Best Solution: Sorting
+
+```java
+public boolean containsDuplicate(int[] nums) {
+    Arrays.sort(nums);
+    for (int i = 0; i < nums.length - 1; ++i) {
+        if (nums[i] == nums[i + 1]) return true;
+    }
+    return false;
+}
+```
+
+Time: O(nlogn)
+
+Space: O(1)
+
+### Best Solution: Hash Table
+
+```java
+public boolean containsDuplicate(int[] nums) {
+    Set<Integer> set = new HashSet<>(nums.length);
+    for (int x: nums) {
+        if (set.contains(x)) return true;
+        set.add(x);
+    }
+    return false;
+}
+```
+
+Time: O(n)
+
+Space: O(n)
