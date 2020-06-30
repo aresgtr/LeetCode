@@ -190,7 +190,7 @@ Space: O(1)
 
 Reverse的方法最好，最易于理解。Cyclic Replacement不易理解。自己的方法运算时间太长。
 
-## Contains Duplicate
+## 217.Contains Duplicate
 
 ### Best Solution: Sorting
 
@@ -224,3 +224,52 @@ public boolean containsDuplicate(int[] nums) {
 Time: O(n)
 
 Space: O(n)
+
+## 136.Single Number
+
+### My Solution
+
+```java
+class Solution {
+    public int singleNumber(int[] nums) {
+        Arrays.sort(nums);
+        
+        for (int i = 0; i < nums.length - 1; i += 2) {
+            if (nums[i] != nums[i + 1]) {
+                return nums[i];
+            }
+        }
+        
+        return nums[nums.length - 1];
+    }
+}
+```
+
+### Best Solution: Hash Table
+
+```java
+class Solution {
+  public int singleNumber(int[] nums) {
+    HashMap<Integer, Integer> hash_table = new HashMap<>();
+
+    for (int i : nums) {
+      hash_table.put(i, hash_table.getOrDefault(i, 0) + 1);
+    }
+    for (int i : nums) {
+      if (hash_table.get(i) == 1) {
+        return i;
+      }
+    }
+    return 0;
+  }
+}
+```
+
+Time: O(n)
+Space: O(n)
+
+看到数字是几就在新做的第几位的value + 1（如果value是0那就0+1），最后看哪一位的value是1
+
+### Notes
+
+我认为我的解法更好一些
