@@ -273,3 +273,150 @@ Space: O(n)
 ### Notes
 
 我认为我的解法更好一些
+
+# LeetCode题解经典题
+
+## 链表
+
+### 7. 链表求和
+
+445.
+
+#### My Solution
+```java
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+
+        if (l1 == null) return l2;
+        else if (l2 == null) return l1;
+
+        ListNode digitNode = null;
+        ListNode prev = null;
+        int toNextDigit = 0;
+        List<ListNode> nodeList1 = new ArrayList<>();
+        List<ListNode> nodeList2 = new ArrayList<>();
+
+        while (l1 != null) {
+            nodeList1.add(l1);
+            l1 = l1.next;
+        }
+
+        while (l2 != null) {
+            nodeList2.add(l2);
+            l2 = l2.next;
+        }
+
+        int i = nodeList1.size() - 1;
+        int j = nodeList2.size() - 1;
+
+        while (i >= 0 || j >= 0) {
+
+            int first;
+            int second;
+            
+            if (i >= 0) {
+                first = nodeList1.get(i).val;
+            } else {
+                first = 0;
+            }
+
+            if (j >= 0) {
+                second = nodeList2.get(j).val;
+            } else {
+                second = 0;
+            }
+
+            int digitInt = (first + second + toNextDigit) % 10;
+            toNextDigit = (first + second + toNextDigit) / 10;
+
+            digitNode = new ListNode(digitInt);
+            digitNode.next = prev;
+            prev = digitNode;
+
+            i--;
+            j--;
+        }
+
+        if (toNextDigit > 0) {
+            digitNode = new ListNode(toNextDigit);
+            digitNode.next = prev;
+        }
+
+        return digitNode;
+
+    }
+}
+```
+
+#### Best Solution
+
+```java
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) { 
+        Stack<Integer> stack1 = new Stack<>();
+        Stack<Integer> stack2 = new Stack<>();
+        while (l1 != null) {
+            stack1.push(l1.val);
+            l1 = l1.next;
+        }
+        while (l2 != null) {
+            stack2.push(l2.val);
+            l2 = l2.next;
+        }
+        
+        int carry = 0;
+        ListNode head = null;
+        while (!stack1.isEmpty() || !stack2.isEmpty() || carry > 0) {
+            int sum = carry;
+            sum += stack1.isEmpty()? 0: stack1.pop();
+            sum += stack2.isEmpty()? 0: stack2.pop();
+            ListNode node = new ListNode(sum % 10);
+            node.next = head;
+            head = node;
+            carry = sum / 10;
+        }
+        return head;
+    }
+}
+
+作者：sweetiee
+链接：https://leetcode-cn.com/problems/add-two-numbers-ii/solution/javakai-fa-by-sweetiee/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+### 8. 回文链表
+
+234.
+
+#### My Solution
+
+```java
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) return true;
+
+        List<Integer> list = new ArrayList<>();
+
+        while (head != null) {
+
+            list.add(head.val);
+            head = head.next;
+        }
+
+        for (int i = 0, j = list.size() - 1; i < j; i++, j--) {
+            if (!list.get(i).equals(list.get(j))) {
+                System.out.println(list.get(j));
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+```
+
+#### Best Solution
+
+https://leetcode-cn.com/problems/palindrome-linked-list/solution/hui-wen-lian-biao-by-leetcode/
+
