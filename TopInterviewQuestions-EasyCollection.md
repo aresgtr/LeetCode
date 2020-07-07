@@ -276,6 +276,8 @@ Space: O(n)
 
 # LeetCode题解经典题
 
+https://github.com/CyC2018/CS-Notes
+
 ## 链表
 
 ### 7. 链表求和
@@ -420,3 +422,110 @@ class Solution {
 
 https://leetcode-cn.com/problems/palindrome-linked-list/solution/hui-wen-lian-biao-by-leetcode/
 
+
+### 9. 分隔链表
+
+725.
+
+#### My Solution
+
+```python
+class Solution:
+    def splitListToParts(self, root: ListNode, k: int) -> List[ListNode]:
+
+        cur = root
+
+        for num_nodes in range (1001):
+            if not cur:
+                break
+            cur = cur.next
+
+        num_in_parts, remainder = divmod(num_nodes, k)
+
+        if num_in_parts < 1:
+            num_in_parts = 1
+            remainder = 0
+
+        ans = []
+        cur = root
+
+        for i in range (k):
+
+            if remainder > 0:
+                current_num_in_parts = num_in_parts
+            else:
+                current_num_in_parts = num_in_parts - 1
+                
+            remainder -= 1
+
+            ans.append(cur)
+
+            for j in range (current_num_in_parts):
+                cur = cur.next
+
+            if cur and cur.next:
+                next_node = cur.next
+                cur.next = None
+            else:
+                next_node = None
+         
+            cur = next_node
+
+        return ans
+```
+
+#### Best Solution
+
+```python
+class Solution(object):
+    def splitListToParts(self, root, k):
+        cur = root
+        for N in xrange(1001):
+            if not cur: break
+            cur = cur.next
+        width, remainder = divmod(N, k)
+
+        ans = []
+        cur = root
+        for i in xrange(k):
+            head = cur
+            for j in xrange(width + (i < remainder) - 1):
+                if cur: cur = cur.next
+            if cur:
+                cur.next, cur = None, cur.next
+            ans.append(head)
+        return ans
+
+作者：LeetCode
+链接：https://leetcode-cn.com/problems/split-linked-list-in-parts/solution/fen-ge-lian-biao-by-leetcode-2/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+```
+
+### 10. 链表元素按奇偶聚集
+
+328.
+
+#### My Solution
+
+已参考答案
+
+```python
+class Solution:
+    def oddEvenList(self, head: ListNode) -> ListNode:
+
+        if head is None or head.next is None: return head
+
+        odd_pointer = head
+        even_head = even_pointer = head.next
+
+        while even_pointer and even_pointer.next:
+            odd_pointer.next = even_pointer.next
+            odd_pointer = odd_pointer.next
+            even_pointer.next = odd_pointer.next
+            even_pointer = even_pointer.next
+
+        odd_pointer.next = even_head
+
+        return head
+```
